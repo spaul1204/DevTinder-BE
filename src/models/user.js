@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
+      index: true,
       minLength: 3,
       maxLength: 20,
     },
@@ -36,10 +37,9 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      validate(value) {
-        if (!["Male", "Female", "Others"].includes(value)) {
-          throw new Error("Gender must be either Male or Female or Others");
-        }
+      enum: {
+        values: ["Male", "Female", "Others"],
+        message: "{VALUE} is not supported",
       },
     },
     age: {

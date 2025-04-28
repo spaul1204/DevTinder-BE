@@ -5,6 +5,23 @@ const validateSignupData = (req) => {
   }
   return true;
 };
+
+const validateProfileData = (data) => {
+  const ALLOWED_FIELDS = [
+    "firstName",
+    "lastName",
+    "age",
+    "gender",
+    "about",
+    "photoUrl",
+    "skills",
+  ];
+  const isEditAllowed = Object.keys(data).every((field) =>
+    ALLOWED_FIELDS.includes(field)
+  );
+  return isEditAllowed;
+};
 module.exports = {
   validateSignupData,
+  validateProfileData,
 };
