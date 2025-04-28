@@ -10,10 +10,12 @@ app.use(cookieParser());
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const requestRoutes = require("./routes/requests");
+const userRoutes = require("./routes/user");
 
-app.use('/',authRoutes);
-app.use('/',profileRoutes);
-app.use('/',requestRoutes);
+app.use("/", authRoutes);
+app.use("/", profileRoutes);
+app.use("/", requestRoutes);
+app.use("/", userRoutes);
 
 //GET all the users from the db
 app.get("/feed", async (req, res) => {
