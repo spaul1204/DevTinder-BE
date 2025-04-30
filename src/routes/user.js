@@ -59,11 +59,15 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
     //check if profile being fetched has not been ignored or rejected or interested by loggedin user
     //check if profile being fetched has not ignored or rejected or interested by logged in user
     const loggedInUser = req.user;
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 50 : limit;
+    const skip = (page - 1) * limit;
     //all requests sent and recieved
     const connectionRequests = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedInUser.id }, { toUserId: loggedInUser.id }],
     });
-    
+
     const hideUsersFromFeed = new Set();
     connectionRequests.forEach((each) => {
       hideUsersFromFeed.add(each.fromUserId.toString());
@@ -75,8 +79,11 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
         { _id: { $nin: Array.from(hideUsersFromFeed) } },
         { _id: { $ne: loggedInUser.id } },
       ],
-    }).select(USER_DISPLAY_DATA);
-    res.status(200).json({ users });
+    })
+      .select(USER_DISPLAY_DATA)
+      .skip(skip)
+      .limit(limit);
+    res.status(200).json({ data: users });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
