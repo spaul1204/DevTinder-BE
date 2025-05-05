@@ -4,7 +4,7 @@ const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 const userRouter = express.Router();
 
-const USER_DISPLAY_DATA = "firstName lastName age gender skills";
+const USER_DISPLAY_DATA = "firstName lastName age about gender skills photoUrl";
 //get all the requests sent to the logged in user
 userRouter.get("/user/requests/recieved", userAuth, async (req, res) => {
   try {
@@ -15,7 +15,7 @@ userRouter.get("/user/requests/recieved", userAuth, async (req, res) => {
       status: "interested",
     }).populate("fromUserId", USER_DISPLAY_DATA);
 
-    res.status(200).json(connectionRequests);
+    res.status(200).json({ data: connectionRequests });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
