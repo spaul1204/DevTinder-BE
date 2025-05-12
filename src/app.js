@@ -4,7 +4,8 @@ const User = require("./models/user");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-require("dotenv").config();
+const initialiseSocket = require("./utils/socket");
+require("dotenv").config()
 
 app.use(
   cors({
@@ -14,6 +15,11 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+const http = require("http");
+const server = http.createServer(app);
+
+initialiseSocket(server);
 
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
@@ -72,7 +78,7 @@ app.patch("/user/:id", async (req, res) => {
 connectDB()
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(3000, () => {
+    server.listen(3000, () => {
       console.log("Server is running on port 3000");
     });
   })
