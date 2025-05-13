@@ -5,7 +5,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const initialiseSocket = require("./utils/socket");
-require("dotenv").config()
+require("dotenv").config();
 
 app.use(
   cors({
@@ -25,11 +25,13 @@ const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const requestRoutes = require("./routes/requests");
 const userRoutes = require("./routes/user");
+const chatRouter = require("./routes/chat");
 
 app.use("/", authRoutes);
 app.use("/", profileRoutes);
 app.use("/", requestRoutes);
 app.use("/", userRoutes);
+app.use("/", chatRouter);
 
 //GET all the users from the db
 app.get("/feed", async (req, res) => {
